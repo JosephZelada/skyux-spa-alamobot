@@ -1,0 +1,8 @@
+{
+  "mode": "easy",
+  "compileMode": "aot",
+  "a11y": true,
+  "appSettings": {
+    "alamobotApiUrl": "http://localhost:8142"
+  }
+}

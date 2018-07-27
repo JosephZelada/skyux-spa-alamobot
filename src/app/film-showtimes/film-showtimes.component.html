@@ -1,0 +1,37 @@
+<app-nav role="navigation"></app-nav>
+
+<sky-tile *ngIf="!listDataProvider.failedToLoadFilmShowtimes">
+  <sky-tile-title class="filmShowtimeCount">
+    {{filmName}}
+  </sky-tile-title>
+  <sky-tile-content>
+
+    <div *ngIf="listDataProvider.failedToLoadFilmShowtimes" id="form-list-error">
+      <sky-error errorType="broken">
+        <sky-error-action>
+          <button
+            type="button"
+            class="sky-btn sky-btn-primary"
+            (click)="refreshPage()">
+            Refresh
+          </button>
+        </sky-error-action>
+      </sky-error>
+    </div>
+
+    <sky-list [dataProvider]="listDataProvider" *ngIf="!listDataProvider.failedToLoadFilmShowtimes">
+      <sky-list-toolbar></sky-list-toolbar>
+      <sky-list-view-grid fit="scroll">
+        <sky-grid-column field="showtime" [heading]="Showtime" [template]="FormNameTemplate"></sky-grid-column>
+      </sky-list-view-grid>
+      <sky-list-paging [pageSize]="10"></sky-list-paging>
+    </sky-list>
+
+    <ng-template let-item="item" #FormNameTemplate>
+      <a routerLink="{{item.data.sessionId}}" class="donation-form-details-link">{{item.data.showtime}}</a>
+    </ng-template>
+    <ng-template let-value="value" #DateFormat>
+      {{ value | date:'medium' }}
+    </ng-template>
+  </sky-tile-content>
+</sky-tile>
