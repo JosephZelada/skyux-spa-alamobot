@@ -1,12 +1,12 @@
 <app-nav role="navigation"></app-nav>
 
 <sky-tile>
-  <sky-tile-title class="filmCount">
-    {{filmCountNum}} Forms
+  <sky-tile-title class="marketCount">
+    Available Markets
   </sky-tile-title>
   <sky-tile-content>
 
-    <div *ngIf="listDataProvider.failedToLoadFilms" id="form-list-error">
+    <div *ngIf="listDataProvider.failedToLoadMarkets" id="form-list-error">
       <sky-error errorType="broken">
         <sky-error-action>
           <button
@@ -19,13 +19,18 @@
       </sky-error>
     </div>
 
-    <sky-list [dataProvider]="listDataProvider" *ngIf="!listDataProvider.failedToLoadFilms">
-      <sky-list-toolbar></sky-list-toolbar>
+    <sky-list [dataProvider]="listDataProvider" *ngIf="!listDataProvider.failedToLoadMarkets">
       <sky-list-view-grid fit="scroll">
-        <sky-grid-column field="name" [heading]="Name" [template]="FormNameTemplate"></sky-grid-column>
+        <sky-grid-column field="name" [heading]="alamobotConstants.MARKET_NAME" [template]="FormNameTemplate"></sky-grid-column>
+        <sky-grid-column field="watched" [heading]="alamobotConstants.WATCHED" [template]="contextMenuButtonTemplate"></sky-grid-column>
       </sky-list-view-grid>
-      <sky-list-paging [pageSize]="10"></sky-list-paging>
+      <sky-list-paging pageSize={{pageSize}}></sky-list-paging>
     </sky-list>
+
+    <ng-template let-row="row" #contextMenuButtonTemplate="">
+      <sky-checkbox [checked]="row.watched" (change)="setMarketStatus(row,$event.checked)">
+      </sky-checkbox>
+    </ng-template>
 
     <ng-template let-item="item" #FormNameTemplate>
       <a routerLink="{{item.data.id}}" class="donation-form-details-link">{{item.data.name}}</a>

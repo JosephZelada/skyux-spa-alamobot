@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { FilmService } from '../film-service/film-service';
+import { FilmService } from '../service/film-service';
 import { FilmEntity } from '../details/film-entity';
 import { ListDataProvider, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
 import { Observable } from "rxjs/Observable";
 import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
+import { AlamobotConstants } from '../details/alamobot-constants';
 
 export class FilmListProvider extends ListDataProvider {
   public failedToLoadFilms: boolean = false;
@@ -49,12 +50,13 @@ export class FilmListProvider extends ListDataProvider {
 }
 
 @Component({
-  selector: 'my-about',
-  templateUrl: './about.component.html',
+  selector: 'film-list',
+  templateUrl: './film-list.component.html',
   providers: [FilmService]
 })
-export class AboutComponent {
+export class FilmListComponent {
   public listDataProvider: FilmListProvider;
+  public alamobotConstants = new AlamobotConstants();
 
   constructor(private filmService: FilmService) {
     this.listDataProvider = new FilmListProvider(this.filmService);
@@ -62,5 +64,10 @@ export class AboutComponent {
 
   public get filmCountNum() {
     return this.listDataProvider.currentFilmCount;
+  }
+
+  public setFilmStatus(filmEntity: FilmEntity, watched: boolean) {
+    console.log(filmEntity);
+    this.filmService.setWatchedStatus(filmEntity.id, watched);
   }
 }

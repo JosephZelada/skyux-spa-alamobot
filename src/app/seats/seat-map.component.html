@@ -1,0 +1,30 @@
+<app-nav role="navigation"></app-nav>
+
+<sky-tile *ngIf="!failedToLoadSeats">
+  <sky-tile-title>
+    Seating Map
+  </sky-tile-title>
+  <sky-tile-content>
+
+    <div *ngIf="failedToLoadSeats" id="form-list-error">
+      <sky-error errorType="broken">
+        <sky-error-action>
+          <button
+            type="button"
+            class="sky-btn sky-btn-primary"
+            (click)="refreshPage()">
+            Refresh
+          </button>
+        </sky-error-action>
+      </sky-error>
+    </div>
+    <div *ngFor="let row of cached | async">
+      {{row[0].rowNumber}}
+      <span *ngFor="let seat of row" class="button-row">
+        <button type="button" class="sky-btn sky-btn-primary" *ngIf="!seatChosen(seat) && !isEmptySpace(seat)" (click)="chooseSeat(seat)">{{ seat.seatNumber }}</button>
+        <button type="button" class="sky-btn sky-btn-default" *ngIf="seatChosen(seat) && !isEmptySpace(seat)" (click)="unchooseSeat(seat)">{{ seat.seatNumber }}</button>
+        <button type="button" class="sky-btn sky-btn-primary" *ngIf="isEmptySpace(seat)">{{ seat.seatNumber }}</button>
+      </span>
+    </div>
+  </sky-tile-content>
+</sky-tile>

@@ -8,7 +8,7 @@ import { FilmShowtimes } from '../details/film-showtimes';
 @Injectable()
 export class FilmService {
   public readonly filmApiUrl: string = this._configuration.alamobotApiUrl + '/film';
-
+  public readonly filmShowtimeApiUrl: string = this._configuration.alamobotApiUrl + '/movie';
 
   constructor(private http: HttpClient,
               private _configuration: Configuration) {
@@ -22,5 +22,19 @@ export class FilmService {
   public getFilmShowtimeList(filmId: string): Observable<FilmShowtimes> {
     return this.http
       .get(this.filmApiUrl + '/' + filmId);
+  }
+
+  public setWatchedStatus(filmId: string, watched: boolean) {
+    console.log('trying to set the watched status on ' + this.filmApiUrl + '/' + filmId);
+    this.http
+      .post<string>(this.filmApiUrl + '/' + filmId + '?watched=' + watched, {}).subscribe((response) => {
+      console.log(response);
+    });
+  }
+
+  public setSessionWatchedStatus(sessionId: string, watched: boolean) {
+    console.log('trying to set the watched status on ' + this.filmShowtimeApiUrl + '/' + sessionId);
+    this.http
+      .post<string>(this.filmShowtimeApiUrl + '/' + sessionId + '?watched=' + watched, {}).subscribe();
   }
 }

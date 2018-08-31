@@ -12,8 +12,12 @@ export class AppNavComponent {
       path: '/'
     },
     {
-      titleKey: 'app_nav_about',
-      path: '/about'
+      titleKey: 'app_nav_film_list',
+      path: '/film-list'
+    },
+    {
+      titleKey: 'app_nav_market',
+      path: '/market'
     }
   ];
 }

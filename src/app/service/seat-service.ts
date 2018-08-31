@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Configuration } from '../app.configuration';
-import { FilmEntity } from '../details/film-entity';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
-import { FilmShowtimes } from '../details/film-showtimes';
 import { SeatMap } from '../details/seat-map';
 
 @Injectable()
