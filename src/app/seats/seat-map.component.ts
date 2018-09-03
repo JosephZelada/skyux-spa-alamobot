@@ -37,8 +37,24 @@ export class SeatMapComponent implements OnInit{
       .take(1);
   }
 
+  public claimSeatsForSession() {
+    this.seatService.claimSeatsForSession(this.route.snapshot.paramMap.get('sessionId'), this.selectedSeats).subscribe(ableToBuySeats =>  {
+      console.log(ableToBuySeats);
+      if(ableToBuySeats) {
+        this.openBuyingSuccessModal();
+      } else {
+        this.openBuyingErrorModal();
+      }
+    },
+    err => this.openBuyingErrorModal());
+  }
+
   public isEmptySpace(seat: Seat): boolean {
-    return seat.rowNumber == 0 || seat.seatNumber == 0
+    return seat.seatStatus == 'NONE'
+  }
+
+  public isSeatTaken(seat: Seat): boolean {
+    return seat.seatStatus == 'SOLD'
   }
 
   public seatChosen(seat: Seat): boolean {
@@ -63,6 +79,26 @@ export class SeatMapComponent implements OnInit{
     const config: ErrorModalConfig = {
       errorTitle: 'Too many seats picked!',
       errorDescription: 'You tried to select more than 10 seats. Please deselect some seats and try again',
+      errorCloseText: 'OK'
+    };
+
+    this.errorService.open(config);
+  }
+
+  public openBuyingErrorModal() {
+    const config: ErrorModalConfig = {
+      errorTitle: 'Unable to buy seats!',
+      errorDescription: 'Unable to purchase your chosen seats, please try again. If the issue persists, maybe pick some different seats fucko',
+      errorCloseText: 'OK'
+    };
+
+    this.errorService.open(config);
+  }
+
+  public openBuyingSuccessModal() {
+    const config: ErrorModalConfig = {
+      errorTitle: 'Seats purchased!',
+      errorDescription: 'Ya did it, seats purchased. MVP babyyyyyyy',
       errorCloseText: 'OK'
     };
 
