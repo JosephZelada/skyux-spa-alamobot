@@ -1,5 +1,6 @@
 export class Seat {
-  constructor(public rowIndex: number,
+  constructor(public id: number,
+              public rowIndex: number,
               public columnIndex: number,
               public rowNumber: number,
               public seatNumber: number,
