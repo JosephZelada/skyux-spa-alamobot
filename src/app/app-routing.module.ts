@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { FilmListComponent } from './about/film-list.component';
+import { FilmListComponent } from './film-list/film-list.component';
 import { FilmShowtimesComponent } from './film-showtimes/film-showtimes.component';
 import { MarketComponent } from './market/market.component';
 import { SeatMapComponent } from './seats/seat-map.component';

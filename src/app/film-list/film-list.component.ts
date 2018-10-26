@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FilmService } from '../service/film-service';
-import { FilmEntity } from '../details/film-entity';
-import { ListDataProvider, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
+import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
 import { Observable } from "rxjs/Observable";
 import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { AlamobotConstants } from '../details/alamobot-constants';
+import { EntityPage } from '../details/entity-page';
+import { Entity } from '../details/entity';
 
 export class FilmListProvider extends ListDataProvider {
   public failedToLoadFilms: boolean = false;
@@ -14,38 +15,26 @@ export class FilmListProvider extends ListDataProvider {
     super();
   }
 
-  public get(): Observable<ListDataResponseModel> {
-    return this.getFilmList();
+  public get(request: ListDataRequestModel): Observable<ListDataResponseModel> {
+    return this.getFilmList(request);
   }
 
   public count(): Observable<number> {
     return Observable.of(this.currentFilmCount);
   }
 
-  private getFilmList(): Observable<ListDataResponseModel> {
-    return this.filmService.getFilmList()
-      .map((res: any) => {
-        this.failedToLoadFilms = false;
-        return res;
-      })
-      .flatMap(this.buildListItem)
+  private getFilmList(request: ListDataRequestModel): Observable<ListDataResponseModel> {
+    return this.filmService.getFilmList(request)
+      .map((page: EntityPage) => {
+          this.failedToLoadFilms = false;
+          const items: ListItemModel[] = page.content.map((film: Entity) => new ListItemModel(film.id.toString(), film));
+          return new ListDataResponseModel({count: page.totalElements, items: items});
+        }
+      )
       .catch((err) => {
         this.failedToLoadFilms = true;
         return Observable.throw(err);
       });
-  }
-
-  private buildListItem(result: any) {
-    let filmEntityListItems: Array<ListItemModel>;
-    let filmEntities: FilmEntity[] = new Array<FilmEntity>();
-    filmEntities = Object.assign(filmEntities, result);
-    filmEntityListItems = filmEntities.map((x: any) => new ListItemModel(x.id, x));
-    this.currentFilmCount = filmEntityListItems.length;
-
-    return Observable.of(new ListDataResponseModel({
-      count: filmEntityListItems.length,
-      items: filmEntityListItems
-    }));
   }
 }
 
@@ -66,8 +55,7 @@ export class FilmListComponent {
     return this.listDataProvider.currentFilmCount;
   }
 
-  public setFilmStatus(filmEntity: FilmEntity, watched: boolean) {
-    console.log(filmEntity);
-    this.filmService.setWatchedStatus(filmEntity.id, watched);
+  public setFilmStatus(filmEntity: Entity, watched: boolean) {
+    this.filmService.setFilmWatchedStatus(filmEntity.id, watched);
   }
 }

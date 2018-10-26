@@ -4,12 +4,12 @@ import { Observable } from "rxjs/Observable";
 import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { AlamobotConstants } from '../details/alamobot-constants';
 import { MarketService } from '../service/market-service';
-import { MarketEntity } from '../details/market-entity';
+import { EntityPage } from '../details/entity-page';
+import { Entity } from '../details/entity';
 
 export class MarketListProvider extends ListDataProvider {
   public failedToLoadMarkets: boolean = false;
   public currentMarketCount: number = 0;
-
 
   constructor(private marketService: MarketService) {
     super();
@@ -24,29 +24,17 @@ export class MarketListProvider extends ListDataProvider {
   }
 
   private getMarketList(request: ListDataRequestModel): Observable<ListDataResponseModel> {
-    return this.marketService.getMarketList('', request)
-      .map((res: any) => {
-        this.failedToLoadMarkets = false;
-        console.log(res);
-        return res.content;
-      })
-      .flatMap(this.buildListItem)
+    return this.marketService.getMarketList(request)
+      .map((page: EntityPage) => {
+          this.failedToLoadMarkets = false;
+          const items: ListItemModel[] = page.content.map((market: Entity) => new ListItemModel(market.id.toString(), market));
+          return new ListDataResponseModel({count: page.totalElements, items: items});
+        }
+      )
       .catch((err) => {
         this.failedToLoadMarkets = true;
         return Observable.throw(err);
       });
-  }
-
-  private buildListItem(result: any) {
-    let marketEntityListItems: Array<ListItemModel>;
-    let marketEntities: MarketEntity[] = new Array<MarketEntity>();
-    marketEntities = Object.assign(marketEntities, result);
-    marketEntityListItems = marketEntities.map((x: any) => new ListItemModel(x.id, x));
-    this.currentMarketCount = marketEntityListItems.length;
-    return Observable.of(new ListDataResponseModel({
-      count: marketEntityListItems.length,
-      items: marketEntityListItems
-    }));
   }
 }
 
@@ -58,7 +46,7 @@ export class MarketListProvider extends ListDataProvider {
 export class MarketComponent {
   public listDataProvider: MarketListProvider;
   public alamobotConstants = new AlamobotConstants();
-  public pageSize = 30;
+  public pageSize = 10;
 
   constructor(private marketService: MarketService) {
     this.listDataProvider = new MarketListProvider(this.marketService);
@@ -68,7 +56,7 @@ export class MarketComponent {
     return this.listDataProvider.currentMarketCount;
   }
 
-  public setMarketStatus(marketEntity: MarketEntity, watched: boolean) {
+  public setMarketStatus(marketEntity: Entity, watched: boolean) {
     console.log(marketEntity);
     this.marketService.setWatchedStatus(marketEntity.id, watched);
   }

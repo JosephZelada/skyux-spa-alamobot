@@ -20,12 +20,11 @@
     </div>
 
     <sky-list [dataProvider]="listDataProvider" *ngIf="!listDataProvider.failedToLoadFilms">
-      <sky-list-toolbar></sky-list-toolbar>
       <sky-list-view-grid fit="scroll">
         <sky-grid-column field="name" [heading]="alamobotConstants.FILM_NAME" [template]="FormNameTemplate"></sky-grid-column>
         <sky-grid-column field="watched" [heading]="alamobotConstants.WATCHED" [template]="contextMenuButtonTemplate"></sky-grid-column>
       </sky-list-view-grid>
-      <sky-list-paging [pageSize]="10"></sky-list-paging>
+      <sky-list-paging pageSize={{pageSize}}></sky-list-paging>
     </sky-list>
 
     <ng-template let-row="row" #contextMenuButtonTemplate="">

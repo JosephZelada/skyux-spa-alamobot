@@ -3,8 +3,7 @@ import { FilmService } from '../service/film-service';
 import { ListDataProvider, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
 import { Observable } from "rxjs/Observable";
 import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
-import { FilmShowtime } from '../details/film-showtime';
-import { FilmShowtimes } from '../details/film-showtimes';
+import { FilmShowtime, FilmShowtimes } from '../details/film-showtimes';
 import {ActivatedRoute} from '@angular/router';
 import { AlamobotConstants } from '../details/alamobot-constants';
 
