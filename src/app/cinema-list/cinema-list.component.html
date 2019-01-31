@@ -1,0 +1,36 @@
+<app-nav role="navigation"></app-nav>
+
+<sky-tile>
+  <sky-tile-title class="cinemaCount">
+    {{cinemaCountNum}} Forms
+  </sky-tile-title>
+  <sky-tile-content>
+
+    <div *ngIf="listDataProvider.failedToLoadCinemas" id="form-list-error">
+      <sky-error errorType="broken">
+        <sky-error-action>
+          <button
+            type="button"
+            class="sky-btn sky-btn-primary"
+            (click)="refreshPage()">
+            Refresh
+          </button>
+        </sky-error-action>
+      </sky-error>
+    </div>
+
+    <sky-list [dataProvider]="listDataProvider" *ngIf="!listDataProvider.failedToLoadCinemas">
+      <sky-list-view-grid fit="scroll">
+        <sky-grid-column field="name" [heading]="alamobotConstants.CINEMA_NAME" [template]="FormNameTemplate"></sky-grid-column>
+      </sky-list-view-grid>
+      <sky-list-paging pageSize={{pageSize}}></sky-list-paging>
+    </sky-list>
+
+    <ng-template let-item="item" #FormNameTemplate>
+      <a routerLink="{{item.data.id}}" class="donation-form-details-link">{{item.data.name}}</a>
+    </ng-template>
+    <ng-template let-value="value" #DateFormat>
+      {{ value | date:'medium' }}
+    </ng-template>
+  </sky-tile-content>
+</sky-tile>

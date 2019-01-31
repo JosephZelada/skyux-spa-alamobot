@@ -6,26 +6,29 @@ import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { AlamobotConstants } from '../details/alamobot-constants';
 import { EntityPage } from '../details/entity-page';
 import { Entity } from '../details/entity';
+import {ActivatedRoute} from '@angular/router';
 
 export class FilmListProvider extends ListDataProvider {
   public failedToLoadFilms: boolean = false;
   public currentFilmCount: number = 0;
 
-  constructor(private filmService: FilmService) {
+  constructor(private filmService: FilmService,
+              private route: ActivatedRoute) {
     super();
   }
 
   public get(request: ListDataRequestModel): Observable<ListDataResponseModel> {
-    return this.getFilmList(request);
+    return this.getFilmList(request, this.route.snapshot.paramMap.get('marketId'));
   }
 
   public count(): Observable<number> {
     return Observable.of(this.currentFilmCount);
   }
 
-  private getFilmList(request: ListDataRequestModel): Observable<ListDataResponseModel> {
-    return this.filmService.getFilmList(request)
+  private getFilmList(request: ListDataRequestModel, marketId: string): Observable<ListDataResponseModel> {
+    return this.filmService.getFilmList(request, marketId)
       .map((page: EntityPage) => {
+          console.log(page);
           this.failedToLoadFilms = false;
           const items: ListItemModel[] = page.content.map((film: Entity) => new ListItemModel(film.id.toString(), film));
           return new ListDataResponseModel({count: page.totalElements, items: items});
@@ -47,8 +50,9 @@ export class FilmListComponent {
   public listDataProvider: FilmListProvider;
   public alamobotConstants = new AlamobotConstants();
 
-  constructor(private filmService: FilmService) {
-    this.listDataProvider = new FilmListProvider(this.filmService);
+  constructor(private filmService: FilmService,
+              private route: ActivatedRoute) {
+    this.listDataProvider = new FilmListProvider(this.filmService, this.route);
   }
 
   public get filmCountNum() {

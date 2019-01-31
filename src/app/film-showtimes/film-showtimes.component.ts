@@ -13,7 +13,7 @@ export class FilmShowtimeListProvider extends ListDataProvider{
   public filmName: string = '';
 
   constructor(private filmService: FilmService,
-              private route:ActivatedRoute) {
+              private route: ActivatedRoute) {
     super();
   }
 
