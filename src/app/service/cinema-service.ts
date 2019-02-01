@@ -13,7 +13,7 @@ export class CinemaService {
               private _configuration: Configuration) {
   }
 
-  public getCinemaList(request: ListDataRequestModel, marketId: string): Observable<EntityPage> {
+  public getCinemaList(request: ListDataRequestModel, marketId: string, filmId: string): Observable<EntityPage> {
     let sortOrder;
     let sortColumn;
     if (request.sort.fieldSelectors.length === 0) {
@@ -31,6 +31,6 @@ export class CinemaService {
       search_term: request.search.searchText,
     };
     let queryString = Object.keys(params).map((key) => key + '=' + params[key]).join('&');
-    return this.http.get(this.cinemaApiUrl +'/' + marketId + '?' + queryString);
+    return this.http.get(this.cinemaApiUrl +'/' + marketId + '/' + filmId + '?' + queryString);
   }
 }

@@ -2,7 +2,7 @@
 
 <sky-tile *ngIf="!failedToLoadSeats">
   <sky-tile-title>
-    {{filmName}} Seating Map
+    {{filmName}} Bought Seating Map
   </sky-tile-title>
   <sky-tile-content>
 
@@ -21,12 +21,12 @@
     <div *ngFor="let row of cached | async">
       {{row[0].rowNumber}}
       <span *ngFor="let seat of row" class="button-row">
-        <button type="button" class="sky-btn sky-btn-primary" *ngIf="!seatChosen(seat) && !isEmptySpace(seat) && !isSeatTaken(seat)" (click)="chooseSeat(seat)">{{ seat.seatNumber }}</button>
-        <button type="button" class="sky-btn sky-btn-default" *ngIf="seatChosen(seat) && !isEmptySpace(seat) && !isSeatTaken(seat)" (click)="unchooseSeat(seat)">{{ seat.seatNumber }}</button>
+        <button type="button" class="sky-btn sky-btn-primary" *ngIf="!isEmptySpace(seat) && !isSeatTaken(seat)">{{ seat.seatNumber }}</button>
+        <button type="button" class="sky-btn sky-btn-default" *ngIf="isSeatBought(seat) && !doesSomeoneHaveSeat(seat)" (click)="showPersonSittingInSeat(seat)">{{ seat.seatNumber }}</button>
+        <button type="button" class="sky-btn sky-btn-link-inline" *ngIf="isSeatBought(seat) && doesSomeoneHaveSeat(seat)" (click)="showPersonSittingInSeat(seat)">{{ seat.seatNumber }}</button>
         <button type="button" class="sky-btn sky-btn-primary" *ngIf="isEmptySpace(seat)">{{ seat.seatNumber }}</button>
         <button type="button" class="sky-btn sky-btn-link" *ngIf="isSeatTaken(seat)">Sold</button>
       </span>
     </div>
-    <button type="button" class="sky-btn sky-btn-primary" (click)="claimSeatsForSession()">Secure Seats</button>
   </sky-tile-content>
 </sky-tile>

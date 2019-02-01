@@ -19,15 +19,15 @@ export class CinemaListProvider extends ListDataProvider{
   }
 
   public get(request: ListDataRequestModel): Observable<ListDataResponseModel> {
-    return this.getCinemaList(request, this.route.snapshot.paramMap.get('marketId'));
+    return this.getCinemaList(request, this.route.snapshot.paramMap.get('marketId'), this.route.snapshot.paramMap.get('filmId'));
   }
 
   public count(): Observable<number> {
     return Observable.of(this.currentCinemaCount);
   }
 
-  private getCinemaList(request: ListDataRequestModel, marketId: string): Observable<ListDataResponseModel> {
-    return this.cinemaService.getCinemaList(request, marketId)
+  private getCinemaList(request: ListDataRequestModel, marketId: string, filmId: string): Observable<ListDataResponseModel> {
+    return this.cinemaService.getCinemaList(request, marketId, filmId)
       .map((page: EntityPage) => {
           this.failedToLoadCinemas = false;
           const items: ListItemModel[] = page.content.map((cinema: CinemaEntity) => new ListItemModel(cinema.id.toString(), cinema));

@@ -5,6 +5,8 @@ export class Seat {
               public rowNumber: number,
               public seatNumber: number,
               public areaIndex: number,
-              public seatStatus: string){
+              public seatStatus: string,
+              public seatBought: boolean,
+              public personInSeat: string){
   }
 }

@@ -38,8 +38,8 @@ export class FilmService extends PageableSortableService {
     return this.httpClient.get(this.filmApiUrl + '?' + queryString);
   }
 
-  public getFilmShowtimeList(filmId: string): Observable<FilmShowtimes> {
-    return this.http.get(this.filmApiUrl + '/' + filmId);
+  public getFilmShowtimeList(filmId: string, cinemaId: string): Observable<FilmShowtimes> {
+    return this.http.get(this.filmApiUrl + '/' + cinemaId + '/' + filmId);
   }
 
   public setFilmWatchedStatus(filmId: string, watched: boolean) {

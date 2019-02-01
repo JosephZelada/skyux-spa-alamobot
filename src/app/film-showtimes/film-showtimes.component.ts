@@ -18,15 +18,15 @@ export class FilmShowtimeListProvider extends ListDataProvider{
   }
 
   public get(): Observable<ListDataResponseModel> {
-    return this.getFilmShowtimeList(this.route.snapshot.paramMap.get('filmId'));
+    return this.getFilmShowtimeList(this.route.snapshot.paramMap.get('filmId'), this.route.snapshot.paramMap.get('cinemaId'));
   }
 
   public count(): Observable<number> {
     return Observable.of(this.currentFilmCount);
   }
 
-  private getFilmShowtimeList(filmId: string): Observable<ListDataResponseModel> {
-    return this.filmService.getFilmShowtimeList(filmId)
+  private getFilmShowtimeList(filmId: string, cinemaId: string): Observable<ListDataResponseModel> {
+    return this.filmService.getFilmShowtimeList(filmId, cinemaId)
       .map((res: FilmShowtimes) => {
         this.failedToLoadFilms = false;
         this.filmName = res.name;

@@ -15,10 +15,6 @@ import { ErrorModalConfig, SkyErrorModalService } from '@blackbaud/skyux/dist/mo
 export class SeatMapComponent implements OnInit{
   public failedToLoadSeats: boolean = false;
   public filmName: string = '';
-  public row1 = ["bip","bop","lop","dop","fop","phop","drop"];
-  public row2 = ["dec","bart"];
-  public row3 = ["grade","panther","rocktop"];
-  public rows = [this.row1, this.row2, this.row3];
 
   public selectedSeats: Array<Seat> = [];
 
@@ -31,7 +27,11 @@ export class SeatMapComponent implements OnInit{
 
   ngOnInit() {
     this.cached = this.seatService.getFilmShowtimeSeats(this.route.snapshot.paramMap.get('sessionId'))
-      .map((response:SeatMap) => response.seats)
+      .map((response:SeatMap) => {
+        this.failedToLoadSeats = false;
+        this.filmName = response.filmName;
+        return response.seats
+      })
       .publishReplay(1)
       .refCount()
       .take(1);
