@@ -25,7 +25,7 @@
         <button type="button" class="sky-btn sky-btn-default" *ngIf="isSeatBought(seat) && !doesSomeoneHaveSeat(seat)" (click)="showPersonSittingInSeat(seat)">{{ seat.seatNumber }}</button>
         <button type="button" class="sky-btn sky-btn-link-inline" *ngIf="isSeatBought(seat) && doesSomeoneHaveSeat(seat)" (click)="showPersonSittingInSeat(seat)">{{ seat.seatNumber }}</button>
         <button type="button" class="sky-btn sky-btn-primary" *ngIf="isEmptySpace(seat)">{{ seat.seatNumber }}</button>
-        <button type="button" class="sky-btn sky-btn-link" *ngIf="isSeatTaken(seat)">Sold</button>
+        <button type="button" class="sky-btn sky-btn-link" *ngIf="!isSeatBought(seat) && isSeatTaken(seat)">Sold</button>
       </span>
     </div>
   </sky-tile-content>
