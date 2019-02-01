@@ -72,7 +72,6 @@ export class FilmShowtimesComponent {
   }
 
   public setFilmShowtimeStatus(filmShowtime: FilmShowtime, watched: boolean) {
-    console.log(filmShowtime);
     this.filmService.setSessionWatchedStatus(filmShowtime.sessionId, watched);
   }
 }

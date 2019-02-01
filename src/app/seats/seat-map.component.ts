@@ -39,7 +39,6 @@ export class SeatMapComponent implements OnInit{
 
   public claimSeatsForSession() {
     this.seatService.claimSeatsForSession(this.route.snapshot.paramMap.get('sessionId'), this.selectedSeats).subscribe(ableToBuySeats =>  {
-      console.log(ableToBuySeats);
       if(ableToBuySeats) {
         this.openBuyingSuccessModal();
       } else {

@@ -57,7 +57,6 @@ export class MarketComponent {
   }
 
   public setMarketStatus(marketEntity: Entity, watched: boolean) {
-    console.log(marketEntity);
     this.marketService.setWatchedStatus(marketEntity.id, watched);
   }
 }

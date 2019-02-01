@@ -4,4 +4,5 @@ export class AlamobotConstants {
   public WATCHED = 'Watched';
   public SHOWTIME = 'Showtime';
   public CINEMA_NAME = 'Cinema';
+  public NUM_SEATS = 'Number Of Seats';
 }

@@ -29,7 +29,6 @@ export class CinemaListProvider extends ListDataProvider{
   private getCinemaList(request: ListDataRequestModel, marketId: string): Observable<ListDataResponseModel> {
     return this.cinemaService.getCinemaList(request, marketId)
       .map((page: EntityPage) => {
-          console.log(page);
           this.failedToLoadCinemas = false;
           const items: ListItemModel[] = page.content.map((cinema: CinemaEntity) => new ListItemModel(cinema.id.toString(), cinema));
           return new ListDataResponseModel({count: page.totalElements, items: items});

@@ -12,8 +12,8 @@ export class AppNavComponent {
       path: '/'
     },
     {
-      titleKey: 'app_nav_film_list',
-      path: '/film-list'
+      titleKey: 'app_nav_bought_films',
+      path: '/bought-films'
     },
     {
       titleKey: 'app_nav_market',

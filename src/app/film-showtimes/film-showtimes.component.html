@@ -22,7 +22,7 @@
     <sky-list [dataProvider]="listDataProvider" *ngIf="!listDataProvider.failedToLoadFilmShowtimes">
       <sky-list-toolbar></sky-list-toolbar>
       <sky-list-view-grid fit="scroll">
-        <sky-grid-column field="showtime" [heading]="alamobotConstants.SHOWTIME" [template]="FormNameTemplate"></sky-grid-column>
+        <sky-grid-column field="showtime" [heading]="alamobotConstants.SHOWTIME" [template]="DateFormat"></sky-grid-column>
         <sky-grid-column field="watched" [heading]="alamobotConstants.WATCHED" [template]="contextMenuButtonTemplate"></sky-grid-column>
       </sky-list-view-grid>
       <sky-list-paging [pageSize]="10"></sky-list-paging>
@@ -33,11 +33,8 @@
       </sky-checkbox>
     </ng-template>
 
-    <ng-template let-item="item" #FormNameTemplate>
-      <a routerLink="{{item.data.sessionId}}" class="donation-form-details-link">{{item.data.showtime}}</a>
-    </ng-template>
-    <ng-template let-value="value" #DateFormat>
-      {{ value | date:'medium' }}
+    <ng-template let-item="item" #DateFormat>
+      <a routerLink="{{item.data.sessionId}}" class="donation-form-details-link">{{ item.data.showtime | date:'medium' }}</a>
     </ng-template>
   </sky-tile-content>
 </sky-tile>

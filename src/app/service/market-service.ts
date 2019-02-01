@@ -20,7 +20,6 @@ export class MarketService extends PageableSortableService{
   }
 
   public setWatchedStatus(marketId: string, watched: boolean) {
-    console.log('trying to set the watched status on ' + this.marketApiUrl + '/' + marketId);
     this.http
       .post<string>(this.marketApiUrl + '/' + marketId + '?watched=' + watched, {}).subscribe();
   }

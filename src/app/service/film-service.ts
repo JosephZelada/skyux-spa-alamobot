@@ -43,16 +43,10 @@ export class FilmService extends PageableSortableService {
   }
 
   public setFilmWatchedStatus(filmId: string, watched: boolean) {
-    console.log('trying to set the watched status on ' + this.filmApiUrl + '/' + filmId);
-    this.http
-      .post<string>(this.filmApiUrl + '/' + filmId + '?watched=' + watched, {}).subscribe((response) => {
-      console.log(response);
-    });
+    this.http.post<string>(this.filmApiUrl + '/' + filmId + '?watched=' + watched, {}).subscribe();
   }
 
   public setSessionWatchedStatus(sessionId: string, watched: boolean) {
-    console.log('trying to set the watched status on ' + this.filmShowtimeApiUrl + '/' + sessionId);
-    this.http
-      .post<string>(this.filmShowtimeApiUrl + '/' + sessionId + '?watched=' + watched, {}).subscribe();
+    this.http.post<string>(this.filmShowtimeApiUrl + '/' + sessionId + '?watched=' + watched, {}).subscribe();
   }
 }
