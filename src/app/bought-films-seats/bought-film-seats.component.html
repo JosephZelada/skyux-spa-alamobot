@@ -21,7 +21,7 @@
     <div *ngFor="let row of cached | async">
       {{row[0].rowNumber}}
       <span *ngFor="let seat of row" class="button-row">
-        <button type="button" class="sky-btn sky-btn-primary" *ngIf="!isEmptySpace(seat) && !isSeatTaken(seat)">{{ seat.seatNumber }}</button>
+        <button type="button" class="sky-btn sky-btn-primary" *ngIf="!isSeatBought(seat) && !isEmptySpace(seat) && !isSeatTaken(seat)">{{ seat.seatNumber }}</button>
         <button type="button" class="sky-btn sky-btn-default" *ngIf="isSeatBought(seat) && !doesSomeoneHaveSeat(seat)" (click)="showPersonSittingInSeat(seat)">{{ seat.seatNumber }}</button>
         <button type="button" class="sky-btn sky-btn-link-inline" *ngIf="isSeatBought(seat) && doesSomeoneHaveSeat(seat)" (click)="showPersonSittingInSeat(seat)">{{ seat.seatNumber }}</button>
         <button type="button" class="sky-btn sky-btn-primary" *ngIf="isEmptySpace(seat)">{{ seat.seatNumber }}</button>
