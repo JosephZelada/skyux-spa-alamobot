@@ -11,6 +11,10 @@
     "message": "Market",
     "_description": "The text for the Market top-level navigation item"
   },
+  "app_nav_alerts": {
+    "message": "Alerts",
+    "_description": "Film buy alerts"
+  },
   "app_nav_home": {
     "message": "Home",
     "_description": "The text for the Home top-level navigation item"

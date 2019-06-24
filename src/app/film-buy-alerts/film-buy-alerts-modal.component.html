@@ -1,0 +1,79 @@
+<sky-modal>
+  <sky-modal-header>
+    {{title}}
+  </sky-modal-header>
+  <sky-modal-content>
+    <div>
+      <label>
+        Film Search Term
+        <input type="text" [(ngModel)]="context.filmSearchTerm">
+      </label>
+    </div>
+    <div>
+      <label>
+        Seat Count
+        <input type="text" [(ngModel)]="context.seatCount">
+      </label>
+    </div>
+    <div>
+      <label>
+        Override Seating Algorithm
+        <sky-checkbox [checked]="false" #overrideSeatingAlgorithm></sky-checkbox>
+      </label>
+    </div>
+    <div style="max-width: 400px">
+      <label>
+        Earliest Showtime
+        <sky-timepicker #earliestShowtime>
+          <input
+            type="text"
+            [skyTimepickerInput]="earliestShowtime"
+            [timeFormat]="format24"
+            [(ngModel)]="selectedTime1"
+            #time="ngModel"
+          />
+        </sky-timepicker>
+      </label>
+    </div>
+    <div style="max-width: 400px">
+      <label>
+        Latest Showtime
+        <sky-timepicker #latestShowtime>
+          <input
+            type="text"
+            [skyTimepickerInput]="latestShowtime"
+            [timeFormat]="format24"
+            [(ngModel)]="selectedTime2"
+            #time="ngModel"
+          />
+        </sky-timepicker>
+      </label>
+    </div>
+    <div>
+      <sky-list
+        [dataProvider]="listDataProvider"
+        (selectedIdsChange)="selectedItemsChange($event)">
+        <sky-list-toolbar>
+        </sky-list-toolbar>
+        <sky-list-view-checklist
+          label="column2"
+          description="column3"
+          [selectMode]="selectMode">
+        </sky-list-view-checklist>
+      </sky-list>
+    </div>
+    <p>
+      <sky-alert *ngIf="context.eventMessage">
+        {{context.eventMessage}}
+      </sky-alert>
+    </p>
+  </sky-modal-content>
+  <sky-modal-footer>
+    <button
+      type="button"
+      class="sky-btn sky-btn-primary"
+      (click)="instance.save('Something cool')">
+      Save
+    </button>
+  </sky-modal-footer>
+</sky-modal>

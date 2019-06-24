@@ -18,6 +18,10 @@ export class AppNavComponent {
     {
       titleKey: 'app_nav_market',
       path: '/market'
+    },
+    {
+      titleKey: 'app_nav_alerts',
+      path: '/alerts'
     }
   ];
 }

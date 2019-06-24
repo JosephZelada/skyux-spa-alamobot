@@ -29,11 +29,6 @@
       <sky-list-paging pageSize={{pageSize}}></sky-list-paging>
     </sky-list>
 
-    <ng-template let-row="row" #contextMenuButtonTemplate="">
-      <sky-checkbox [checked]="row.watched" (change)="setFilmStatus(row,$event.checked)">
-      </sky-checkbox>
-    </ng-template>
-
     <ng-template let-item="item" #FormNameTemplate>
       <a routerLink="{{item.data.sessionId}}/map" class="donation-form-details-link">{{item.data.filmName}}</a>
     </ng-template>

@@ -1,0 +1,48 @@
+<app-nav role="navigation"></app-nav>
+
+<sky-tile>
+  <sky-tile-title class="alertTitle">
+    Active Film Buy Alerts
+  </sky-tile-title>
+  <sky-tile-content>
+
+    <div *ngIf="listDataProvider.failedToLoadAlerts" id="form-list-error">
+      <sky-error errorType="broken">
+        <sky-error-action>
+          <button
+            type="button"
+            class="sky-btn sky-btn-primary"
+            (click)="refreshPage()">
+            Refresh
+          </button>
+        </sky-error-action>
+      </sky-error>
+    </div>
+
+    <button type="button" class="sky-btn sky-btn-default" (click)="openModal('defaultModal')">
+      Add new alert
+    </button>
+
+    <sky-list [dataProvider]="listDataProvider" *ngIf="!listDataProvider.failedToLoadAlerts">
+      <sky-list-view-grid fit="scroll">
+        <sky-grid-column field="filmName" [heading]="alamobotConstants.FILM_SEARCH_TERM"></sky-grid-column>
+        <sky-grid-column field="preferredCinemas" [heading]="alamobotConstants.PREFERRED_CINEMAS"></sky-grid-column>
+        <sky-grid-column field="earliestShowtime" [heading]="alamobotConstants.EARLIEST_SHOWTIME" [template]="DateFormat"></sky-grid-column>
+        <sky-grid-column field="latestShowtime" [heading]="alamobotConstants.LATEST_SHOWTIME" [template]="DateFormat"></sky-grid-column>
+        <sky-grid-column field="preferredDaysOfTheWeek" [heading]="alamobotConstants.PREFERRED_DAYS_OF_THE_WEEK"></sky-grid-column>
+        <sky-grid-column field="seatCount" [heading]="alamobotConstants.NUM_SEATS"></sky-grid-column>
+        <sky-grid-column field="overrideSeatingAlgorithm" [heading]="alamobotConstants.OVERRIDE_SEATING_ALGORITHM" [template]="contextMenuButtonTemplate"></sky-grid-column>
+      </sky-list-view-grid>
+      <sky-list-paging pageSize={{pageSize}}></sky-list-paging>
+    </sky-list>
+
+    <ng-template let-row="row" #contextMenuButtonTemplate="">
+      <sky-checkbox [checked]="row.watched">
+      </sky-checkbox>
+    </ng-template>
+
+    <ng-template let-value="value" #DateFormat>
+      {{ value | date:'h:mm a' }}
+    </ng-template>
+  </sky-tile-content>
+</sky-tile>

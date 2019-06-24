@@ -4,10 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
 import { ListDataRequestModel } from '@blackbaud/skyux/dist/modules/list';
 import { EntityPage } from '../details/entity-page';
+import { CinemaEntity } from '../details/entity';
 
 @Injectable()
 export class CinemaService {
-  public readonly cinemaApiUrl: string = this._configuration.alamobotApiUrl + '/market';
+  public readonly marketApiUrl: string = this._configuration.alamobotApiUrl + '/market';
+  public readonly cinemaApiUrl: string = this._configuration.alamobotApiUrl + '/cinema';
 
   constructor(private http: HttpClient,
               private _configuration: Configuration) {
@@ -31,6 +33,10 @@ export class CinemaService {
       search_term: request.search.searchText,
     };
     let queryString = Object.keys(params).map((key) => key + '=' + params[key]).join('&');
-    return this.http.get(this.cinemaApiUrl +'/' + marketId + '/' + filmId + '?' + queryString);
+    return this.http.get(this.marketApiUrl +'/' + marketId + '/' + filmId + '?' + queryString);
+  }
+
+  public getWatchedCinemaListForMarket(marketId: string): Observable<CinemaEntity[]> {
+    return this.http.get(this.cinemaApiUrl + '?market_id=' + marketId);
   }
 }
