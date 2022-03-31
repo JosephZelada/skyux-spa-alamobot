@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SkyAppConfig } from '@blackbaud/skyux-builder/runtime';
+import { SkyAppConfig } from "@skyux/config";
 
 @Injectable()
 export class Configuration {

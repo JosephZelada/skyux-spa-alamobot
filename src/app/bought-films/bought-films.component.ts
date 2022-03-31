@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
-import { Observable } from "rxjs/Observable";
-import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { AlamobotConstants } from '../details/alamobot-constants';
 import { AdminService } from '../service/admin-service';
 import { BoughtFilm } from '../details/bought-film';
+import { Observable, of } from "rxjs";
+import { ListItemModel } from "@skyux/list-builder-common";
+import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from "@skyux/list-builder";
 
 export class BoughtFilmListProvider extends ListDataProvider {
   public failedToLoadFilms: boolean = false;
@@ -19,7 +19,7 @@ export class BoughtFilmListProvider extends ListDataProvider {
   }
 
   public count(): Observable<number> {
-    return Observable.of(this.currentFilmCount);
+    return of(this.currentFilmCount);
   }
 
   private buildListItem(result: any) {
@@ -29,7 +29,7 @@ export class BoughtFilmListProvider extends ListDataProvider {
     boughtFilmListItems = boughtFilms.map((x: BoughtFilm) => new ListItemModel(x.sessionId, x));
     this.currentFilmCount = boughtFilmListItems.length;
 
-    return Observable.of(new ListDataResponseModel({
+    return of(new ListDataResponseModel({
       count: boughtFilmListItems.length,
       items: boughtFilmListItems
     }));
@@ -42,7 +42,7 @@ export class BoughtFilmListProvider extends ListDataProvider {
         return res;
       })
       .flatMap(this.buildListItem)
-      .catch((err) => {
+      .catch((err: any) => {
         this.failedToLoadFilms = true;
         return Observable.throw(err);
       });

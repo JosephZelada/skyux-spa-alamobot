@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FilmService } from '../service/film-service';
-import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
-import { Observable } from "rxjs/Observable";
-import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { AlamobotConstants } from '../details/alamobot-constants';
 import { EntityPage } from '../details/entity-page';
 import { Entity } from '../details/entity';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from "@angular/router";
+import { Observable, of } from "rxjs";
+import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from "@skyux/list-builder";
+import { ListItemModel } from "@skyux/list-builder-common";
+import { catchError, map } from "rxjs/operators";
 
 export class FilmListProvider extends ListDataProvider {
   public failedToLoadFilms: boolean = false;
@@ -22,21 +23,21 @@ export class FilmListProvider extends ListDataProvider {
   }
 
   public count(): Observable<number> {
-    return Observable.of(this.currentFilmCount);
+    return of(this.currentFilmCount);
   }
 
   private getFilmList(request: ListDataRequestModel, marketId: string): Observable<ListDataResponseModel> {
-    return this.filmService.getFilmList(request, marketId)
-      .map((page: EntityPage) => {
+    return this.filmService.getFilmList(request, marketId).pipe(
+      map((page: EntityPage) => {
           this.failedToLoadFilms = false;
           const items: ListItemModel[] = page.content.map((film: Entity) => new ListItemModel(film.id.toString(), film));
           return new ListDataResponseModel({count: page.totalElements, items: items});
         }
-      )
-      .catch((err) => {
+      ), catchError((err: any) => {
         this.failedToLoadFilms = true;
         return Observable.throw(err);
-      });
+      })
+    );
   }
 }
 

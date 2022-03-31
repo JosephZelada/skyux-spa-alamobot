@@ -1,10 +1,11 @@
-import {ActivatedRoute} from '@angular/router';
 import { Component } from '@angular/core';
 import { SeatService } from '../service/seat-service';
 import { SeatMap } from '../details/seat-map';
 import { OnInit } from '@angular/core';
 import { Seat } from '../details/seat';
-import { ErrorModalConfig, SkyErrorModalService } from '@blackbaud/skyux/dist/modules/error';
+import { ErrorModalConfig, SkyErrorModalService } from "@skyux/errors";
+import { ActivatedRoute } from "@angular/router";
+import { map } from "rxjs/operators";
 
 
 @Component({
@@ -15,37 +16,43 @@ import { ErrorModalConfig, SkyErrorModalService } from '@blackbaud/skyux/dist/mo
 export class SeatMapComponent implements OnInit{
   public failedToLoadSeats: boolean = false;
   public filmName: string = '';
-
   public selectedSeats: Array<Seat> = [];
+  public cached: any;
 
   constructor(private seatService: SeatService,
               private route:ActivatedRoute,
               private errorService: SkyErrorModalService) {
   }
 
-  private cached: any;
+
 
   ngOnInit() {
-    this.cached = this.seatService.getFilmShowtimeSeats(this.route.snapshot.paramMap.get('sessionId'))
-      .map((response:SeatMap) => {
+    this.cached = this.seatService.getFilmShowtimeSeats(this.route.snapshot.paramMap.get('sessionId')).pipe(
+      map((response:SeatMap) => {
         this.failedToLoadSeats = false;
         this.filmName = response.filmName;
         return response.seats
       })
-      .publishReplay(1)
-      .refCount()
-      .take(1);
+    )
+      // .map((response:SeatMap) => {
+      //   this.failedToLoadSeats = false;
+      //   this.filmName = response.filmName;
+      //   return response.seats
+      // })
+      // .publishReplay(1)
+      // .refCount()
+      // .take(1);
   }
 
   public claimSeatsForSession() {
-    this.seatService.claimSeatsForSession(this.route.snapshot.paramMap.get('sessionId'), this.selectedSeats).subscribe(ableToBuySeats =>  {
+    this.seatService.claimSeatsForSession(this.route.snapshot.paramMap.get('sessionId'), this.selectedSeats).subscribe((ableToBuySeats: any) =>  {
       if(ableToBuySeats) {
         this.openBuyingSuccessModal();
       } else {
         this.openBuyingErrorModal();
       }
     },
-    err => this.openBuyingErrorModal());
+      () => this.openBuyingErrorModal());
   }
 
   public isEmptySpace(seat: Seat): boolean {

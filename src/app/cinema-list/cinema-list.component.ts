@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
-import { Observable } from "rxjs/Observable";
-import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
-import {ActivatedRoute} from '@angular/router';
 import { AlamobotConstants } from '../details/alamobot-constants';
 import { EntityPage } from '../details/entity-page';
 import { CinemaEntity } from '../details/entity';
 import { CinemaService } from '../service/cinema-service';
+import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from "@skyux/list-builder";
+import { ActivatedRoute } from "@angular/router";
+import { Observable, of } from "rxjs";
+import { ListItemModel } from "@skyux/list-builder-common";
 
 export class CinemaListProvider extends ListDataProvider{
   public failedToLoadCinemas: boolean = false;
@@ -14,7 +14,7 @@ export class CinemaListProvider extends ListDataProvider{
   public cinemaName: string = '';
 
   constructor(private cinemaService: CinemaService,
-              private route:ActivatedRoute) {
+              private route: ActivatedRoute) {
     super();
   }
 
@@ -23,7 +23,7 @@ export class CinemaListProvider extends ListDataProvider{
   }
 
   public count(): Observable<number> {
-    return Observable.of(this.currentCinemaCount);
+    return of(this.currentCinemaCount);
   }
 
   private getCinemaList(request: ListDataRequestModel, marketId: string, filmId: string): Observable<ListDataResponseModel> {
@@ -34,7 +34,7 @@ export class CinemaListProvider extends ListDataProvider{
           return new ListDataResponseModel({count: page.totalElements, items: items});
         }
       )
-      .catch((err) => {
+      .catch((err: any) => {
         this.failedToLoadCinemas = true;
         return Observable.throw(err);
       });

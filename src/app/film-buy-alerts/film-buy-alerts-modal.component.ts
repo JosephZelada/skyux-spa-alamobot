@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
-import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { CinemaEntity } from '../details/entity';
 import { CinemaService } from '../service/cinema-service';
-import {FilmBuyAlert} from '../details/film-buy-alert';
+import { FilmBuyAlert } from '../details/film-buy-alert';
+import { Observable, of } from "rxjs";
+import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from "@skyux/list-builder";
+import { ListItemModel } from "@skyux/list-builder-common";
+import { catchError, map } from "rxjs/operators";
 
 export class CinemaListProvider extends ListDataProvider {
   public failedToLoadCinemas: boolean = false;
@@ -20,25 +21,26 @@ export class CinemaListProvider extends ListDataProvider {
   }
 
   public count(): Observable<number> {
-    return Observable.of(this.currentCinemaCount);
+    return of(this.currentCinemaCount);
   }
 
   private getCinemaList(marketId: string): Observable<ListDataResponseModel> {
-    return this.cinemaService.getWatchedCinemaListForMarket(marketId)
-      .map((cinemaList: CinemaEntity[]) =>
+    return this.cinemaService.getWatchedCinemaListForMarket(marketId).pipe(
+      map((cinemaList: CinemaEntity[]) =>
         {
           console.log(cinemaList);
-          this.cinemaList = Observable.of(cinemaList);
+          this.cinemaList = of(cinemaList);
           console.log(this.cinemaList);
           this.failedToLoadCinemas = false;
           const items: ListItemModel[] = cinemaList.map((cinema: CinemaEntity) => new ListItemModel(cinema.id.toString(), cinema));
           return new ListDataResponseModel({count: cinemaList.length, items: items});
         }
-      )
-      .catch((err) => {
+      ),
+      catchError((err: any) => {
         this.failedToLoadCinemas = true;
         return Observable.throw(err);
-      });
+      })
+    )
   }
 }
 
@@ -54,7 +56,7 @@ export class FilmBuyAlertsModalComponent {
   public selectedCinemas: string[] = [];
   public alert: FilmBuyAlert = new FilmBuyAlert('', '', [], undefined, undefined, undefined, false, 0);
 
-  public daysOfTheWeek = Observable.of([
+  public daysOfTheWeek: Observable<any> = of([
     { id: '1', day: 'Monday', enumName: 'MONDAY' },
     { id: '2', day: 'Tuesday', enumName: 'TUESDAY' },
     { id: '3', day: 'Wednesday', enumName: 'WEDNESDAY' },

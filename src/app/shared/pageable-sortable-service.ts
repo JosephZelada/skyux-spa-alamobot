@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from "rxjs/Observable";
-import { ListDataRequestModel } from '@blackbaud/skyux/dist/modules/list';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { EntityPage } from '../details/entity-page';
+import { ListDataRequestModel } from "@skyux/list-builder";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class PageableSortableService {
-  constructor(private httpClient: HttpClient) {
+  constructor(public httpClient: HttpClient) {
   }
 
   public getEntityList(request: ListDataRequestModel, serviceUrl: string): Observable<EntityPage> {
@@ -27,6 +28,12 @@ export class PageableSortableService {
       search_term: request.search.searchText
     };
     let queryString = Object.keys(params).map((key) => key + '=' + params[key]).join('&');
-    return this.httpClient.get(serviceUrl + '?' + queryString);
+    return this.httpClient.get(serviceUrl + '?' + queryString).pipe(
+      map((response: HttpResponse<EntityPage>) =>
+        {
+          return response.body;
+        }
+      )
+    );
   }
 }

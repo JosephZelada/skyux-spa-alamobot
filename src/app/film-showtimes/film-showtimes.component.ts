@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { FilmService } from '../service/film-service';
-import { ListDataProvider, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
-import { Observable } from "rxjs/Observable";
-import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { FilmShowtime, FilmShowtimes } from '../details/film-showtimes';
-import {ActivatedRoute} from '@angular/router';
 import { AlamobotConstants } from '../details/alamobot-constants';
+import { ListDataProvider, ListDataResponseModel } from "@skyux/list-builder";
+import { ActivatedRoute } from "@angular/router";
+import { Observable, of } from "rxjs";
+import { ListItemModel } from "@skyux/list-builder-common";
+import { flatMap } from "rxjs/internal/operators";
+import { catchError, map } from "rxjs/operators";
 
 export class FilmShowtimeListProvider extends ListDataProvider{
   public failedToLoadFilms: boolean = false;
@@ -22,21 +24,22 @@ export class FilmShowtimeListProvider extends ListDataProvider{
   }
 
   public count(): Observable<number> {
-    return Observable.of(this.currentFilmCount);
+    return of(this.currentFilmCount);
   }
 
   private getFilmShowtimeList(filmId: string, cinemaId: string): Observable<ListDataResponseModel> {
-    return this.filmService.getFilmShowtimeList(filmId, cinemaId)
-      .map((res: FilmShowtimes) => {
+    return this.filmService.getFilmShowtimeList(filmId, cinemaId).pipe(
+      map((res: FilmShowtimes) => {
         this.failedToLoadFilms = false;
         this.filmName = res.name;
         return res.showtimeList
-      })
-      .flatMap(this.buildListItem)
-      .catch((err) => {
+      }),
+      flatMap(this.buildListItem),
+      catchError((err: any) => {
         this.failedToLoadFilms = true;
         return Observable.throw(err);
-      });
+      })
+    )
   }
 
   private buildListItem(result: any) {
@@ -46,7 +49,7 @@ export class FilmShowtimeListProvider extends ListDataProvider{
     filmShowtimeListItems = filmShowtimes.map((x: FilmShowtime) => new ListItemModel(x.sessionId, x));
     this.currentFilmCount = filmShowtimeListItems.length;
 
-    return Observable.of(new ListDataResponseModel({
+    return of(new ListDataResponseModel({
       count: filmShowtimeListItems.length,
       items: filmShowtimeListItems
     }));

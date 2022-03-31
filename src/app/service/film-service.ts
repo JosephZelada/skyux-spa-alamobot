@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Configuration } from '../app.configuration';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from "rxjs/Observable";
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { FilmShowtimes } from '../details/film-showtimes';
-import { ListDataRequestModel } from '@blackbaud/skyux/dist/modules/list';
 import { EntityPage } from '../details/entity-page';
 import { PageableSortableService } from '../shared/pageable-sortable-service';
+import { ListDataRequestModel } from "@skyux/list-builder";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class FilmService extends PageableSortableService {
@@ -35,11 +36,23 @@ export class FilmService extends PageableSortableService {
       market_id: marketId
     };
     let queryString = Object.keys(params).map((key) => key + '=' + params[key]).join('&');
-    return this.httpClient.get(this.filmApiUrl + '?' + queryString);
+    return this.httpClient.get(this.filmApiUrl + '?' + queryString).pipe(
+      map((response: HttpResponse<EntityPage>) =>
+        {
+          return response.body;
+        }
+      )
+    );
   }
 
   public getFilmShowtimeList(filmId: string, cinemaId: string): Observable<FilmShowtimes> {
-    return this.http.get(this.filmApiUrl + '/' + cinemaId + '/' + filmId);
+    return this.http.get(this.filmApiUrl + '/' + cinemaId + '/' + filmId).pipe(
+      map((response: HttpResponse<FilmShowtimes>) =>
+        {
+          return response.body;
+        }
+      )
+    );
   }
 
   public setFilmWatchedStatus(filmId: string, watched: boolean) {

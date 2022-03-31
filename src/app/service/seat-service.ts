@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Configuration } from '../app.configuration';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from "rxjs/Observable";
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { SeatMap } from '../details/seat-map';
 import { Seat } from '../details/seat';
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class SeatService {
@@ -16,7 +17,13 @@ export class SeatService {
   }
 
   public getFilmShowtimeSeats(sessionId: string): Observable<SeatMap> {
-    return this.http.get(this.seatApiUrl + '/' + sessionId);
+    return this.http.get(this.seatApiUrl + '/' + sessionId).pipe(
+      map((response: HttpResponse<SeatMap>) =>
+        {
+          return response.body;
+        }
+      )
+    );
   }
 
   public claimSeatsForSession(sessionId: string, seatsToClaim: Array<Seat>): Observable<boolean> {

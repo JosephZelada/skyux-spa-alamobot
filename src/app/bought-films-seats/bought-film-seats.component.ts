@@ -4,7 +4,7 @@ import { SeatService } from '../service/seat-service';
 import { SeatMap } from '../details/seat-map';
 import { OnInit } from '@angular/core';
 import { Seat } from '../details/seat';
-import { ErrorModalConfig, SkyErrorModalService } from '@blackbaud/skyux/dist/modules/error';
+import { ErrorModalConfig, SkyErrorModalService } from "@skyux/errors";
 
 
 @Component({
@@ -15,13 +15,12 @@ import { ErrorModalConfig, SkyErrorModalService } from '@blackbaud/skyux/dist/mo
 export class BoughtFilmSeatsComponent implements OnInit{
   public failedToLoadSeats: boolean = false;
   public filmName: string = '';
+  public cached: any;
 
   constructor(private seatService: SeatService,
               private route:ActivatedRoute,
               private errorService: SkyErrorModalService) {
   }
-
-  private cached: any;
 
   ngOnInit() {
     this.cached = this.seatService.getFilmShowtimeSeats(this.route.snapshot.paramMap.get('sessionId'))

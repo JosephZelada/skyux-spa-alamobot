@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
-import { Observable } from "rxjs/Observable";
-import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { AlamobotConstants } from '../details/alamobot-constants';
 import { AlertService } from '../service/alert-service';
 import { FilmBuyAlert } from '../details/film-buy-alert';
-import { SkyModalDemoContext } from '@blackbaud/skyux/dist/demos/modal/modal-demo-context';
-import { SkyModalCloseArgs, SkyModalService } from '@blackbaud/skyux/dist/modules/modal';
 import { FilmBuyAlertsModalComponent } from './film-buy-alerts-modal.component';
+import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from "@skyux/list-builder";
+import { Observable, of } from "rxjs";
+import { ListItemModel } from "@skyux/list-builder-common";
+import { SkyModalCloseArgs, SkyModalService } from "@skyux/modals";
 
 export class FilmBuyAlertListProvider extends ListDataProvider {
   public failedToLoadAlerts: boolean = false;
@@ -22,7 +21,7 @@ export class FilmBuyAlertListProvider extends ListDataProvider {
   }
 
   public count(): Observable<number> {
-    return Observable.of(this.currentFilmCount);
+    return of(this.currentFilmCount);
   }
 
   private buildListItem(result: any) {
@@ -32,7 +31,7 @@ export class FilmBuyAlertListProvider extends ListDataProvider {
     filmBuyAlertListItems = filmBuyAlerts.map((x: FilmBuyAlert) => new ListItemModel(x.id, x));
     this.currentFilmCount = filmBuyAlertListItems.length;
 
-    return Observable.of(new ListDataResponseModel({
+    return of(new ListDataResponseModel({
       count: filmBuyAlertListItems.length,
       items: filmBuyAlertListItems
     }));
@@ -45,7 +44,7 @@ export class FilmBuyAlertListProvider extends ListDataProvider {
         return res;
       })
       .flatMap(this.buildListItem)
-      .catch((err) => {
+      .catch((err: any) => {
         this.failedToLoadAlerts = true;
         return Observable.throw(err);
       });
@@ -66,11 +65,8 @@ export class FilmBuyAlertsComponent {
   }
 
   public openModal(type: string) {
-    const context = new SkyModalDemoContext();
-    context.valueA = 'Hello';
 
     const options: any = {
-      providers: [{ provide: SkyModalDemoContext, useValue: context }],
       ariaDescribedBy: 'docs-modal-content'
     };
 
@@ -83,9 +79,9 @@ export class FilmBuyAlertsComponent {
     });
 
     modalInstance.helpOpened.subscribe((helpKey: string) => {
-      context.eventMessage =  `
+      console.log(`
         Modal header help was invoked with the following help key: ${helpKey}
-      `;
+      `);
     });
   }
 }

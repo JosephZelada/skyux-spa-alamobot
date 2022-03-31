@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Configuration } from '../app.configuration';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from "rxjs/Observable";
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BoughtFilm } from '../details/bought-film';
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class AdminService {
@@ -13,6 +14,13 @@ export class AdminService {
   }
 
   public getBoughtFilmsList(): Observable<BoughtFilm[]> {
-    return this.http.get(this.adminApiUrl + '/filmsBought');
+    return this.http.get(this.adminApiUrl + '/filmsBought')
+      .pipe(
+        map((response: HttpResponse<BoughtFilm[]>) =>
+          {
+            return response.body;
+          }
+        )
+      );
   }
 }

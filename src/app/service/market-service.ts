@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Configuration } from '../app.configuration';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from "rxjs/Observable";
-import { ListDataRequestModel } from '@blackbaud/skyux/dist/modules/list';
 import { PageableSortableService } from '../shared/pageable-sortable-service';
 import { EntityPage } from '../details/entity-page';
+import { ListDataRequestModel } from "@skyux/list-builder";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class MarketService extends PageableSortableService{

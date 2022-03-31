@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from '@blackbaud/skyux/dist/modules/list';
-import { Observable } from "rxjs/Observable";
-import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { AlamobotConstants } from '../details/alamobot-constants';
 import { MarketService } from '../service/market-service';
 import { EntityPage } from '../details/entity-page';
 import { Entity } from '../details/entity';
+import { ListItemModel } from "@skyux/list-builder-common";
+import { ListDataProvider, ListDataRequestModel, ListDataResponseModel } from "@skyux/list-builder";
+import { Observable, of } from "rxjs";
 
 export class MarketListProvider extends ListDataProvider {
   public failedToLoadMarkets: boolean = false;
@@ -20,7 +20,7 @@ export class MarketListProvider extends ListDataProvider {
   }
 
   public count(): Observable<number> {
-    return Observable.of(this.currentMarketCount);
+    return of(this.currentMarketCount);
   }
 
   private getMarketList(request: ListDataRequestModel): Observable<ListDataResponseModel> {
@@ -31,7 +31,7 @@ export class MarketListProvider extends ListDataProvider {
           return new ListDataResponseModel({count: page.totalElements, items: items});
         }
       )
-      .catch((err) => {
+      .catch((err: any) => {
         this.failedToLoadMarkets = true;
         return Observable.throw(err);
       });
