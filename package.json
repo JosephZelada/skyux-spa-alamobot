@@ -1,5 +1,5 @@
 {
-  "name": "blackbaud-skyux-spa-alamobot",
+  "name": "alamobot",
   "version": "0.0.1",
   "description": "Single-page-application for skyux-spa-alamobot",
   "scripts": {
@@ -26,7 +26,7 @@
     "node-sass": "6.0.1",
     "rxjs": "7.0.0",
     "verbose": "0.2.3",
-    "zone.js": "0.11.4"
+    "zone.js": "0.11.5"
   },
   "devDependencies": {},
   "repository": {
