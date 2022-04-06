@@ -5,6 +5,7 @@ import { ListItemModel } from '@blackbaud/skyux/dist/modules/list/state';
 import { CinemaEntity } from '../details/entity';
 import { CinemaService } from '../service/cinema-service';
 import {FilmBuyAlert} from '../details/film-buy-alert';
+import { AlertService } from "../service/alert-service";
 
 export class CinemaListProvider extends ListDataProvider {
   public failedToLoadCinemas: boolean = false;
@@ -45,7 +46,7 @@ export class CinemaListProvider extends ListDataProvider {
 @Component({
   selector: 'film-buy-alerts-modal-form',
   templateUrl: './film-buy-alerts-modal.component.html',
-  providers: [CinemaService]
+  providers: [CinemaService, AlertService]
 })
 export class FilmBuyAlertsModalComponent {
   public listDataProvider: CinemaListProvider;
@@ -64,7 +65,8 @@ export class FilmBuyAlertsModalComponent {
     { id: '7', day: 'Sunday', enumName: 'SUNDAY' }
   ]);
 
-  constructor(private cinemaService: CinemaService) {
+  constructor(private cinemaService: CinemaService,
+              private alertService: AlertService) {
     this.listDataProvider = new CinemaListProvider(this.cinemaService);
   }
 
@@ -91,6 +93,7 @@ export class FilmBuyAlertsModalComponent {
   }
 
   public saveNewFilmAlert() {
+    this.alertService.setNewAlert(this.alert);
     console.log(this.alert);
   }
 }

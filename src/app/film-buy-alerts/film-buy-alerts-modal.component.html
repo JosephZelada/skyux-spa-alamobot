@@ -24,29 +24,19 @@
     <div style="max-width: 400px">
       <label>
         Earliest Showtime
-        <sky-timepicker #earliestShowtime>
-          <input
-            type="text"
-            [skyTimepickerInput]="earliestShowtime"
-            [timeFormat]="format24"
-            [(ngModel)]="alert.earliestShowtime"
-            #time="ngModel"
-          />
-        </sky-timepicker>
+        <input
+          type="text"
+          [(ngModel)]="alert.earliestShowtime"
+        />
       </label>
     </div>
     <div style="max-width: 400px">
       <label>
         Latest Showtime
-        <sky-timepicker #latestShowtime>
-          <input
-            type="text"
-            [skyTimepickerInput]="latestShowtime"
-            [timeFormat]="format24"
-            [(ngModel)]="alert.latestShowtime"
-            #time="ngModel"
-          />
-        </sky-timepicker>
+        <input
+          type="text"
+          [(ngModel)]="alert.latestShowtime"
+        />
       </label>
     </div>
     <div>
@@ -56,7 +46,7 @@
       <sky-list [data]="daysOfTheWeek" (selectedIdsChange)="selectedItemsChange($event)">
         <sky-list-view-checklist
           label="day"
-          [selectMode]="multiple">
+          selectMode="multiple">
         </sky-list-view-checklist>
       </sky-list>
     </div>
@@ -67,7 +57,7 @@
       <sky-list [dataProvider]="listDataProvider" (selectedIdsChange)="selectedCinemasChange($event)">
         <sky-list-view-checklist
           label="name"
-          [selectMode]="multiple">
+          selectMode="multiple">
         </sky-list-view-checklist>
       </sky-list>
     </div>

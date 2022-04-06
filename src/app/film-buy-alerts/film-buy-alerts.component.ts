@@ -88,4 +88,9 @@ export class FilmBuyAlertsComponent {
       `;
     });
   }
+
+  public deleteAlert(filmBuyAlert: FilmBuyAlert) {
+    console.log(filmBuyAlert)
+    this.alertService.deleteAlert(filmBuyAlert.id)
+  }
 }

@@ -33,10 +33,10 @@ export class CinemaService {
       search_term: request.search.searchText,
     };
     let queryString = Object.keys(params).map((key) => key + '=' + params[key]).join('&');
-    return this.http.get(this.marketApiUrl +'/' + marketId + '/' + filmId + '?' + queryString);
+    return this.http.get<EntityPage>(this.marketApiUrl +'/' + marketId + '/' + filmId + '?' + queryString);
   }
 
   public getWatchedCinemaListForMarket(marketId: string): Observable<CinemaEntity[]> {
-    return this.http.get(this.cinemaApiUrl + '?market_id=' + marketId);
+    return this.http.get<CinemaEntity[]>(this.cinemaApiUrl + '?market_id=' + marketId);
   }
 }

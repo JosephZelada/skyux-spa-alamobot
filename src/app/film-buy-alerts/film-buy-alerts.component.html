@@ -25,6 +25,13 @@
 
     <sky-list [dataProvider]="listDataProvider" *ngIf="!listDataProvider.failedToLoadAlerts">
       <sky-list-view-grid fit="scroll">
+        <sky-grid-column
+          id="contextMenuColumn"
+          [locked]="true"
+          [template]="contextMenuTemplate"
+          [width]="50"
+        >
+        </sky-grid-column>
         <sky-grid-column field="filmName" [heading]="alamobotConstants.FILM_SEARCH_TERM"></sky-grid-column>
         <sky-grid-column field="preferredCinemas" [heading]="alamobotConstants.PREFERRED_CINEMAS"></sky-grid-column>
         <sky-grid-column field="earliestShowtime" [heading]="alamobotConstants.EARLIEST_SHOWTIME" [template]="DateFormat"></sky-grid-column>
@@ -43,6 +50,26 @@
 
     <ng-template let-value="value" #DateFormat>
       {{ value | date:'h:mm a' }}
+    </ng-template>
+
+    <ng-template
+      #contextMenuTemplate
+      let-row="row"
+    >
+      <sky-dropdown
+        buttonType="context-menu"
+      >
+        <sky-dropdown-menu>
+          <sky-dropdown-item>
+            <button
+              type="button"
+              (click)="deleteAlert(row)"
+            >
+              Delete
+            </button>
+          </sky-dropdown-item>
+        </sky-dropdown-menu>
+      </sky-dropdown>
     </ng-template>
   </sky-tile-content>
 </sky-tile>
