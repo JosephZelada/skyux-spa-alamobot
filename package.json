@@ -23,7 +23,7 @@
     "@skyux/core": "^3.6.0",
     "@skyux/forms": "^3.6.0",
     "@skyux/datetime": "^3.6.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "verbose": "^0.2.3"
   },
   "devDependencies": {
