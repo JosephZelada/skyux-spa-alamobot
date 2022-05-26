@@ -27,7 +27,8 @@
     "verbose": "^0.2.3"
   },
   "devDependencies": {
-    "@blackbaud/skyux-builder": "^1.36.0"
+    "@blackbaud/skyux-builder": "^1.36.0",
+    "sockjs-client": "1.6.0"
   },
   "repository": {
     "type": "git",
